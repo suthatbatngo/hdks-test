@@ -1,0 +1,3 @@
+import bcrypt from 'bcryptjs';
+if(!process.stdin.isTTY)throw Error('Run in an interactive terminal.');
+process.stdout.write('Mật khẩu quản trị mới (12–72 byte, không hiển thị): ');process.stdin.setRawMode(true);process.stdin.resume();let password='';process.stdin.on('data',async chunk=>{const text=chunk.toString();if(text==='\u0003')process.exit(1);if(text==='\r'||text==='\n'){process.stdin.setRawMode(false);process.stdin.pause();if(Buffer.byteLength(password)<12||Buffer.byteLength(password)>72){console.error('\nMật khẩu cần 12–72 byte.');process.exit(1)}console.log('\nADMIN_PASSWORD_HASH='+await bcrypt.hash(password,10));password='';process.exit(0)}else if(text==='\u007f')password=password.slice(0,-1);else password+=text});

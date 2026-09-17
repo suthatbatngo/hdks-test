@@ -1,0 +1,6 @@
+export const days={MONDAY:'Tối Thứ 2',TUESDAY:'Tối Thứ 3',FRIDAY:'Tối Thứ 6',SATURDAY:'Tối Thứ 7'} as const;
+export const grades={GRADE_8:'Lớp 8',GRADE_9:'Lớp 9',GRADE_10:'Lớp 10'} as const;
+export const LIMITS={files:20,file:5*1024*1024,total:12*1024*1024,pages:100,pixels:8000000};
+export function validateInput(name:unknown,grade:unknown,day:unknown){if(typeof name!=='string'||typeof grade!=='string'||typeof day!=='string')throw Error('Vui lòng điền đầy đủ thông tin.');name=name.normalize('NFC').trim().replace(/\s+/g,' ');if((name as string).length<2||(name as string).length>100||!/^[\p{L}\p{M} '\-]+$/u.test(name as string))throw Error('Họ tên phải từ 2–100 ký tự và chỉ gồm chữ, khoảng trắng, gạch nối hoặc dấu nháy.');if(!Object.hasOwn(grades,grade))throw Error('Vui lòng chọn Lớp 8, Lớp 9 hoặc Lớp 10.');if(!Object.hasOwn(days,day))throw Error('Vui lòng chọn ngày học hợp lệ.');return {studentName:name as string,grade:grade as keyof typeof grades,studyDay:day as keyof typeof days}}
+export function displayName(v:ReturnType<typeof validateInput>){return `${v.studentName} - ${grades[v.grade]} - ${days[v.studyDay]}.pdf`}
+export function formatTime(s:string){return new Intl.DateTimeFormat('vi-VN',{dateStyle:'short',timeStyle:'short',timeZone:'Asia/Ho_Chi_Minh'}).format(new Date(s))}

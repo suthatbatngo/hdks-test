@@ -1,0 +1,3 @@
+import {days,grades} from './shared';
+export function filters(url:URL){const grade=url.searchParams.get('grade')||'',day=url.searchParams.get('day')||'',q=(url.searchParams.get('q')||'').normalize('NFC').slice(0,100);if(grade&&!Object.hasOwn(grades,grade)||day&&!Object.hasOwn(days,day))throw Error('Bộ lọc không hợp lệ.');return {grade,day,q,where:"status='ready' AND (?='' OR grade=?) AND (?='' OR study_day=?) AND (?='' OR student_name LIKE ? ESCAPE '\\')",args:[grade,grade,day,day,q,'%'+q.replace(/[\\%_]/g,'\\$&')+'%']}}
+export const selectPublic='id,student_name AS studentName,grade,study_day AS studyDay,submitted_at AS submittedAt,display_filename AS displayFilename,file_size AS fileSize,page_count AS pageCount';
